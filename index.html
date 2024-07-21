@@ -3,84 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime Images from MyAnimeList</title>
+    <title>Attractive Image Gallery</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
+            margin: 0;
             padding: 20px;
-        }
-        .container {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
-        .anime {
-            margin: 10px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            width: 200px;
-            text-align: center;
+        h1 {
+            color: #333;
         }
-        .anime img {
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 20px;
+        }
+        .gallery img {
             width: 100%;
             height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
         }
-        .anime-title {
-            padding: 10px;
-            font-size: 16px;
-            font-weight: bold;
+        .gallery img:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
-    <h1>Anime Images from MyAnimeList</h1>
-    <div class="container" id="anime-container">
-        <!-- Gambar anime akan ditambahkan di sini oleh JavaScript -->
-    </div>
-
+    <h1>Random Image Gallery</h1>
+    <div class="gallery" id="gallery"></div>
     <script>
-        // URL MyAnimeList yang berisi daftar anime
-        const url = 'https://api.jikan.moe/v3/top/anime/1/bypopularity';
+        const imageCount = 12; // Number of images to fetch
+        const gallery = document.getElementById('gallery');
 
-        // Fungsi untuk mengambil data dari API
-        async function fetchAnimeData() {
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                displayAnimeImages(data.top);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
+        for (let i = 0; i < imageCount; i++) {
+            const imgElement = document.createElement('img');
+            imgElement.src = `https://picsum.photos/200/300?random=${i}`;
+            gallery.appendChild(imgElement);
         }
-
-        // Fungsi untuk menampilkan gambar anime di halaman
-        function displayAnimeImages(animeList) {
-            const container = document.getElementById('anime-container');
-            animeList.forEach(anime => {
-                const animeElement = document.createElement('div');
-                animeElement.className = 'anime';
-                
-                const imgElement = document.createElement('img');
-                imgElement.src = anime.image_url;
-                imgElement.alt = anime.title;
-
-                const titleElement = document.createElement('div');
-                titleElement.className = 'anime-title';
-                titleElement.textContent = anime.title;
-
-                animeElement.appendChild(imgElement);
-                animeElement.appendChild(titleElement);
-
-                container.appendChild(animeElement);
-            });
-        }
-
-        // Panggil fungsi untuk mengambil dan menampilkan data
-        fetchAnimeData();
     </script>
 </body>
 </html>
