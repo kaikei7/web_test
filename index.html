@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime Images</title>
+    <title>Anime Images from MyAnimeList</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,20 +38,49 @@
 </head>
 <body>
     <h1>Anime Images from MyAnimeList</h1>
-    <div class="container">
-        <div class="anime">
-            <img src="https://cdn.myanimelist.net/images/anime/1208/94745.jpg" alt="Fullmetal Alchemist: Brotherhood">
-            <div class="anime-title">Fullmetal Alchemist: Brotherhood</div>
-        </div>
-        <div class="anime">
-            <img src="https://cdn.myanimelist.net/images/anime/5/73199.jpg" alt="Steins;Gate">
-            <div class="anime-title">Steins;Gate</div>
-        </div>
-        <div class="anime">
-            <img src="https://cdn.myanimelist.net/images/anime/10/78745.jpg" alt="Attack on Titan">
-            <div class="anime-title">Attack on Titan</div>
-        </div>
-        <!-- Tambahkan lebih banyak elemen gambar anime di sini -->
+    <div class="container" id="anime-container">
+        <!-- Gambar anime akan ditambahkan di sini oleh JavaScript -->
     </div>
+
+    <script>
+        // URL MyAnimeList yang berisi daftar anime
+        const url = 'https://api.jikan.moe/v3/top/anime/1/bypopularity';
+
+        // Fungsi untuk mengambil data dari API
+        async function fetchAnimeData() {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                displayAnimeImages(data.top);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        // Fungsi untuk menampilkan gambar anime di halaman
+        function displayAnimeImages(animeList) {
+            const container = document.getElementById('anime-container');
+            animeList.forEach(anime => {
+                const animeElement = document.createElement('div');
+                animeElement.className = 'anime';
+                
+                const imgElement = document.createElement('img');
+                imgElement.src = anime.image_url;
+                imgElement.alt = anime.title;
+
+                const titleElement = document.createElement('div');
+                titleElement.className = 'anime-title';
+                titleElement.textContent = anime.title;
+
+                animeElement.appendChild(imgElement);
+                animeElement.appendChild(titleElement);
+
+                container.appendChild(animeElement);
+            });
+        }
+
+        // Panggil fungsi untuk mengambil dan menampilkan data
+        fetchAnimeData();
+    </script>
 </body>
 </html>
